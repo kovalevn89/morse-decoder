@@ -37,8 +37,26 @@ const MORSE_TABLE = {
     '-----':  '0',
 };
 
+function splitString(input, size){
+    let binaryArray = [];
+    
+    for(let i = input.length; i > 0; i-=size){
+        binaryArray.unshift(input.slice(i - size, i)); 
+    }
+    
+    return binaryArray;
+}
+  
 function decode(expr) {
-    // write your solution here
+    const binaryArray = splitString(expr, 10);
+    
+    return binaryArray.map(function(value) {
+        return value === '**********' ? ' ' : splitString(value, 2).reduce(function(result, value){
+            return result += value === '11' ? '-' : (value === '10') ? '.' : '';
+        },''); 
+    }).map(function(value){
+        return value === ' ' ? ' ' : MORSE_TABLE[value];
+    }).join('');
 }
 
 module.exports = {
